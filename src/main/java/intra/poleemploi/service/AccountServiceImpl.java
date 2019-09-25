@@ -2,8 +2,10 @@ package intra.poleemploi.service;
 
 import intra.poleemploi.dao.AppRoleRepository;
 import intra.poleemploi.dao.AppUserRepository;
+import intra.poleemploi.dao.AppProductRepository;
 import intra.poleemploi.entities.AppRole;
 import intra.poleemploi.entities.AppUser;
+import intra.poleemploi.entities.AppProduct;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,12 +15,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class AccountServiceImpl implements AccountService {
     private AppUserRepository appUserRepository;
     private AppRoleRepository appRoleRepository;
+    private AppProductRepository appProductRepository;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     // injection dependances via constructor
-    public AccountServiceImpl(AppUserRepository appUserRepository, AppRoleRepository appRoleRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public AccountServiceImpl(AppUserRepository appUserRepository, AppRoleRepository appRoleRepository, AppProductRepository appProductRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.appUserRepository = appUserRepository;
         this.appRoleRepository = appRoleRepository;
+        this.appProductRepository = appProductRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
@@ -51,6 +55,11 @@ public class AccountServiceImpl implements AccountService {
     public AppUser loadUserByUsername(String username) {
         return appUserRepository.findUserByUsername(username);
     }
+    // Méthode saveProduct()
+    @Override
+    public AppProduct saveProduct(AppProduct product) {
+        return appProductRepository.save(product);
+    }
     // Méthode addRoleToUser()
     @Override
     public void addRoleToUser(String username, String roleName) {
@@ -59,5 +68,14 @@ public class AccountServiceImpl implements AccountService {
         AppRole appRole = appRoleRepository.findRoleByRoleName(roleName);
         // ajout role à user
         appUser.getRoles().add(appRole);
+    }
+    // méthode addProductToUser()
+    @Override
+    public void addProductToUser(String username, String productName) {
+        // récupère user et product
+        AppUser appUser = appUserRepository.findUserByUsername(username);
+        AppProduct appProduct = appProductRepository.findProductByProductName(productName);
+        // ajout produit à user
+        appUser.getProducts().add(appProduct);
     }
 }
