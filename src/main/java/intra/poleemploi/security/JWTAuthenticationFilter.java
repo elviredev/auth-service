@@ -56,8 +56,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .withIssuer(request.getRequestURI()) // nom de l'autorité de l'application ayant généré le token
                 .withSubject(user.getUsername()) // nom de l'utilisateur
                 .withArrayClaim("roles", roles.toArray(new String[roles.size()])) // ajout des rôles
-                .withExpiresAt(new Date(System.currentTimeMillis() + 10*24*3600)) // date d'expiration
-                .sign(Algorithm.HMAC256("asBH56Ml1pWWuiopH45")); // signature + secret
-        response.addHeader("Authorization", jwt);
+                .withExpiresAt(new Date(System.currentTimeMillis() + SecurityParams.EXPIRATION)) // date d'expiration
+                .sign(Algorithm.HMAC256(SecurityParams.SECRET)); // signature + secret
+        response.addHeader(SecurityParams.JWT_HEADER_NAME, jwt);
     }
 }
