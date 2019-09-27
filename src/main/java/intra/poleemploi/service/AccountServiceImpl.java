@@ -31,7 +31,7 @@ public class AccountServiceImpl implements AccountService {
     public AppUser saveUser(String username, String password, String confirmedPassword) {
         AppUser user = appUserRepository.findUserByUsername(username);
         if(user != null) throw new RuntimeException("User already exist !");
-        if(password != confirmedPassword) throw new RuntimeException("Please confirm your password !");
+        if(!password.equals(confirmedPassword)) throw new RuntimeException("Please confirm your password !");
         // si user n'existe pas => on le créé
         AppUser appUser = new AppUser();
         appUser.setUsername(username);
