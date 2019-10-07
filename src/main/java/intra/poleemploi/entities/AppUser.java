@@ -5,8 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -25,7 +23,4 @@ public class AppUser {
     private boolean activated;
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<AppRole> roles = new ArrayList<>();
-    @ManyToMany() // Hibernate ne prend pas plusieurs collections avec FetchType.EAGER
-    @LazyCollection(LazyCollectionOption.FALSE) // pour contourner l'absence de FetchType.EAGER
-    private Collection<AppProduct> products = new ArrayList<>();
 }

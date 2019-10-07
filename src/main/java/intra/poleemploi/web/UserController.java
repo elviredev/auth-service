@@ -14,7 +14,7 @@ public class UserController {
     private AccountService accountService;
     @PostMapping("/register")
     public AppUser register(@RequestBody UserForm userForm){ // données envoyées au format JSON
-        return accountService.saveUser(userForm.getUsername(), userForm.getPassword(), userForm.getConfirmedPassword());
+        return accountService.saveAppUser(userForm.getUsername(), userForm.getPassword(), userForm.getConfirmedPassword());
     }
 }
 @Data
